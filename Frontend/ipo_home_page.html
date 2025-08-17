@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bluestock IPOs</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      xintegrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0V4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .navbar {
+        background-color: #ffffff;
+        border-bottom: 1px solid #e0e0e0;
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+      }
+      .navbar-brand img {
+        height: 30px;
+      }
+      .navbar-nav .nav-link {
+        color: #343a40;
+        font-weight: 500;
+        margin-right: 1.5rem;
+      }
+      .navbar-nav .nav-link.btn {
+        margin-right: 0.5rem;
+        padding: 0.5rem 1.25rem;
+      }
+      .btn-outline-primary-nav {
+        border-color: #6a0dad;
+        color: #6a0dad;
+        border-radius: 0.5rem;
+      }
+      .btn-outline-primary-nav:hover {
+        background-color: #6a0dad;
+        color: #fff;
+      }
+      .btn-primary-nav {
+        background-color: #6a0dad;
+        border-color: #6a0dad;
+        color: #fff;
+        border-radius: 0.5rem;
+      }
+      .btn-primary-nav:hover {
+        background-color: #5a009d;
+        border-color: #5a009d;
+      }
+      .grid-icon {
+        font-size: 1.5rem;
+        color: #343a40;
+        margin-left: 1rem;
+      }
+      .ipo-card {
+        background-color: #ffffff;
+        border-radius: 0.75rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        margin-bottom: 1.5rem;
+        padding: 1.5rem;
+      }
+      .ipo-card-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+      .ipo-card-header img {
+        border-radius: 0.5rem;
+        margin-right: 1rem;
+      }
+      .ipo-card-title {
+        font-weight: 600;
+        font-size: 1.25rem;
+        color: #333;
+      }
+      .ipo-detail-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .ipo-detail-item {
+        flex: 1 1 48%;
+        margin-bottom: 0.5rem;
+      }
+      .ipo-detail-item strong {
+        display: block;
+        font-size: 0.85rem;
+        color: #6c757d;
+      }
+      .ipo-detail-item span {
+        font-size: 1rem;
+        color: #343a40;
+        font-weight: 500;
+      }
+      .status-badge {
+        padding: 0.35em 0.65em;
+        border-radius: 0.5rem;
+        font-size: 0.75em;
+        font-weight: 600;
+        color: #fff;
+        text-align: center;
+        display: inline-block;
+      }
+      .status-upcoming {
+        background-color: #ffc107;
+      }
+      .status-ongoing {
+        background-color: #17a2b8;
+      }
+      .status-listed {
+        background-color: #28a745;
+      }
+      .status-closed {
+        background-color: #dc3545;
+      }
+      .status-new-listed {
+        background-color: #6f42c1;
+      }
+      .status-comming {
+        background-color: #fd7e14;
+      }
+
+      .btn-primary {
+        background-color: #6a0dad;
+        border-color: #6a0dad;
+        border-radius: 0.5rem;
+      }
+      .btn-primary:hover {
+        background-color: #5a009d;
+        border-color: #5a009d;
+      }
+      .btn-outline-primary {
+        border-color: #6a0dad;
+        color: #6a0dad;
+        border-radius: 0.5rem;
+      }
+      .btn-outline-primary:hover {
+        background-color: #6a0dad;
+        color: #fff;
+      }
+      .faq-section .accordion-button {
+        background-color: #f0f2f5;
+        color: #343a40;
+        font-weight: 600;
+        border-radius: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .faq-section .accordion-item {
+        border: none;
+        margin-bottom: 0.75rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.05);
+      }
+      .faq-section .accordion-body {
+        background-color: #ffffff;
+        border-radius: 0 0 0.75rem 0.75rem;
+        padding-top: 0.75rem;
+      }
+      .apply-ipo-card {
+        background-color: #f0f8ff;
+        border: 1px solid #cceeff;
+        border-radius: 0.75rem;
+        padding: 2rem;
+        text-align: center;
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
+      }
+      .apply-ipo-card h3 {
+        color: #6a0dad;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+      .apply-ipo-card p {
+        color: #495057;
+        margin-bottom: 1.5rem;
+      }
+
+      .footer {
+        background-color: #212529;
+        color: #adb5bd;
+        padding: 3rem 0;
+        margin-top: auto;
+      }
+      .footer h5 {
+        color: #f8f9fa;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+      }
+      .footer ul {
+        list-style: none;
+        padding: 0;
+      }
+      .footer ul li {
+        margin-bottom: 0.75rem;
+      }
+      .footer ul li a {
+        color: #adb5bd;
+        text-decoration: none;
+        transition: color 0.2s ease-in-out;
+      }
+      .footer ul li a:hover {
+        color: #ffffff;
+        text-decoration: underline;
+      }
+      .footer .social-icons a {
+        color: #adb5bd;
+        font-size: 1.5rem;
+        margin-right: 1rem;
+        transition: color 0.2s ease-in-out;
+      }
+      .footer .social-icons a:hover {
+        color: #ffffff;
+      }
+      .footer .logo-footer {
+        height: 40px;
+        margin-bottom: 1rem;
+      }
+      .footer .disclaimer {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-top: 2rem;
+        line-height: 1.5;
+      }
+      .footer .disclaimer a {
+        color: #8c9299;
+        text-decoration: underline;
+      }
+      .footer .disclaimer a:hover {
+        color: #ffffff;
+      }
+      .footer .copyright {
+        font-size: 0.85rem;
+        color: #8c9299;
+        margin-top: 2rem;
+        border-top: 1px solid #343a40;
+        padding-top: 1.5rem;
+      }
+      .footer .copyright .heart {
+        color: #dc3545;
+      }
+      .footer .startupindia-logo {
+        width: 120px;
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <img
+            src="http://127.0.0.1:8000/media/logos/logo.png"
+            alt="Bluestock Logo"
+            class="me-2"
+            style="height: 30px"
+            onerror="this.onerror=null;this.src='https://placehold.co/120x30/6a0dad/ffffff?text=BLUESTOCK';"
+          />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="#">PRODUCTS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">PRICING</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="blog_home_page.html">COMMUNITY</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">MEDIA</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="about_us_page.html">ABOUT US</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="careers_page.html">CAREERS</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a
+                class="nav-link btn btn-outline-primary-nav"
+                href="admin_login_page.html"
+                >Sign In</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link btn btn-primary-nav"
+                href="ipo_signup_page.html"
+                >Sign Up Now</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                  class="bi bi-grid-3x3-gap-fill grid-icon"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1z"
+                  />
+                </svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <h2 class="mb-4 text-center">Upcoming, Ongoing & Listed IPOs</h2>
+
+      <div class="row mb-4">
+        <div class="col-md-6 mx-auto">
+          <div class="input-group">
+            <input
+              type="text"
+              id="search-input"
+              class="form-control rounded-start-pill"
+              placeholder="Search by company name..."
+            />
+            <button
+              class="btn btn-primary rounded-end-pill"
+              type="button"
+              id="search-button"
+            >
+              Search
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="ipo-list" class="row"></div>
+
+      <div id="loading-spinner" class="text-center mt-4" style="display: none">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Loading IPO data...</p>
+      </div>
+      <div
+        id="error-message"
+        class="alert alert-danger mt-4"
+        role="alert"
+        style="display: none"
+      >
+        Failed to load IPO data. Please try again later. <br />
+        Please ensure your Django backend is running and accessible at
+        `http://127.0.0.1:8000/api/ipo/`. <br />
+        If you are running this frontend from a different origin (e.g., a local
+        file or a different domain/port), you might need to configure CORS
+        (Cross-Origin Resource Sharing) on your Django backend to allow requests
+        from this origin.
+      </div>
+      <div
+        id="no-results-message"
+        class="alert alert-info mt-4"
+        role="alert"
+        style="display: none"
+      >
+        No IPOs found matching your criteria.
+      </div>
+
+      <div class="apply-ipo-card">
+        <h3>Applying for this IPO?</h3>
+        <p>
+          The way you compare & invest in only the best IPOs, let us help you
+          get started by comparing and selecting the best Demat account. Open
+          your Demat account now to apply for your favourite IPO.
+        </p>
+        <a href="#" class="btn btn-primary-lg">Compare & Open Demat Account</a>
+      </div>
+
+      <div class="faq-section mt-5">
+        <h2 class="mb-4 text-center">Frequently Asked Questions?</h2>
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseOne"
+                aria-expanded="true"
+                aria-controls="collapseOne"
+              >
+                What is an IPO?
+              </button>
+            </h2>
+            <div
+              id="collapseOne"
+              class="accordion-collapse collapse show"
+              aria-labelledby="headingOne"
+              data-bs-parent="#faqAccordion"
+            >
+              <div class="accordion-body">
+                IPO or the Initial Public Offering is the first time a company
+                issues its shares to the public. As an investor, you will now be
+                able to subscribe for such shares, which was earlier open to
+                only a specific lot of internal and institutional investors via
+                opening a Demat account.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseTwo"
+                aria-expanded="false"
+                aria-controls="collapseTwo"
+              >
+                How to invest in an IPO?
+              </button>
+            </h2>
+            <div
+              id="collapseTwo"
+              class="accordion-collapse collapse"
+              aria-labelledby="headingTwo"
+              data-bs-parent="#faqAccordion"
+            >
+              <div class="accordion-body">
+                Step 1: Login to your respective service provider.<br />
+                Step 2: Click on the IPO button.<br />
+                Step 3: Select the IPO you want to bid and enter the relevant
+                details.<br />
+                Step 4: Your subscription will be completed once you make the
+                payment or give permission.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseThree"
+                aria-expanded="false"
+                aria-controls="collapseThree"
+              >
+                What is the benefit of an IPO?
+              </button>
+            </h2>
+            <div
+              id="collapseThree"
+              class="accordion-collapse collapse"
+              aria-labelledby="headingThree"
+              data-bs-parent="#faqAccordion"
+            >
+              <div class="accordion-body">
+                Investing in IPOs can offer several benefits, including the
+                potential for significant listing gains if the IPO is
+                oversubscribed and lists at a premium. It also allows investors
+                to become early shareholders in promising companies, potentially
+                benefiting from their long-term growth.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseFour"
+                aria-expanded="false"
+                aria-controls="collapseFour"
+              >
+                What are the disadvantages of an IPO?
+              </button>
+            </h2>
+            <div
+              id="collapseFour"
+              class="accordion-collapse collapse"
+              aria-labelledby="headingFour"
+              data-bs-parent="#faqAccordion"
+            >
+              <div class="accordion-body">
+                Disadvantages include the risk of price volatility post-listing,
+                potential for overvaluation, and the lock-in period for early
+                investors. There's also no historical stock performance to
+                analyze, making it harder to assess risk.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFive">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseFive"
+                aria-expanded="false"
+                aria-controls="collapseFive"
+              >
+                How is IPO return calculated?
+              </button>
+            </h2>
+            <div
+              id="collapseFive"
+              class="accordion-collapse collapse"
+              aria-labelledby="headingFive"
+              data-bs-parent="#faqAccordion"
+            >
+              <div class="accordion-body">
+                IPO return is typically calculated as the percentage gain or
+                loss from the IPO issue price to the current market price or
+                listing price. For example, `((Current Market Price - IPO Price)
+                / IPO Price) * 100`.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 col-sm-6 mb-4">
+            <h5>Resources</h5>
+            <ul>
+              <li><a href="#">Trading View</a></li>
+              <li><a href="#">NSE Holidays</a></li>
+              <li><a href="#">e-Voting CDSL</a></li>
+              <li><a href="#">e-Voting NSDL</a></li>
+              <li><a href="#">Market Timings</a></li>
+            </ul>
+          </div>
+          <div class="col-md-3 col-sm-6 mb-4">
+            <h5>Company</h5>
+            <ul>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Community</a></li>
+              <li><a href="#">Blogs</a></li>
+            </ul>
+          </div>
+          <div class="col-md-2 col-sm-6 mb-4">
+            <h5>Offerings</h5>
+            <ul>
+              <li><a href="#">Compare Broker</a></li>
+              <li><a href="#">Fin Calculators</a></li>
+              <li><a href="#">IPO</a></li>
+              <li><a href="#">All Brokers</a></li>
+              <li><a href="#">Products</a></li>
+            </ul>
+          </div>
+          <div class="col-md-2 col-sm-6 mb-4">
+            <h5>Links</h5>
+            <ul>
+              <li><a href="#">Shark Investor</a></li>
+              <li><a href="#">Mutual Funds</a></li>
+              <li><a href="#">Sitemap</a></li>
+              <li><a href="#">Indian Indices</a></li>
+              <li><a href="#">Bug Bounty Program</a></li>
+            </ul>
+          </div>
+          <div class="col-md-2 col-sm-6 mb-4">
+            <h5>Policy</h5>
+            <ul>
+              <li><a href="#">Terms & Conditions</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Refund Policy</a></li>
+              <li><a href="#">Disclaimer</a></li>
+              <li><a href="#">Trust & Security</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="row align-items-center mt-4">
+          <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+            <div class="social-icons mb-3">
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+            <img
+              src="http://127.0.0.1:8000/media/logos/logo.png"
+              alt="Bluestock Logo"
+              class="logo-footer"
+              onerror="this.onerror=null;this.src='https://placehold.co/150x40/6a0dad/ffffff?text=BLUESTOCK';"
+            />
+            <p class="mb-0 mt-2">Bluestock Fintech</p>
+            <p class="mb-0">Pune, Maharashtra</p>
+            <p class="mb-0">MSME Registration No:</p>
+            <p class="mb-0">UDYAM-MH-01-v0138001</p>
+            <img
+              src="https://placehold.co/120x60/000000/ffffff?text=%23startupindia"
+              alt="#startupindia"
+              class="startupindia-logo"
+            />
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <p class="disclaimer">
+              Investment in securities markets are subject to market risks, read
+              all the related documents carefully before Investing as prescribed
+              by SEBI. Issued in the interest of the investors.<br /><br />
+              The users can write to
+              <a href="mailto:hello@bluestock.in">hello@bluestock.in</a> for any
+              app, website related queries. Also you can send IT / Tech related
+              feedback to <a href="mailto:cto@bluestock.in">cto@bluestock.in</a
+              ><br /><br />
+              Disclaimer: We are not a SEBI registered research analyst company.
+              We do not provide any kind of stock recommendations, buy/ sell
+              stock tips, or investment and trading advice. All the stock
+              scripts shown in the Bluestock app, website, all social media
+              handles are for educational purposes only.<br /><br />
+              Before making any investment in the financial market, it is
+              advisable to consult with your financial advisor. Remember that
+              stock markets are subject to market risks.
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 text-center copyright">
+            <p class="mb-0">
+              Bluestock Fintech All Rights Reserved. Made with
+              <i class="fas fa-heart heart"></i> in Pune, Maharashtra
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      xintegrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const ipoListContainer = document.getElementById("ipo-list");
+        const loadingSpinner = document.getElementById("loading-spinner");
+        const errorMessage = document.getElementById("error-message");
+        const noResultsMessage = document.getElementById("no-results-message");
+        const searchInput = document.getElementById("search-input");
+        const searchButton = document.getElementById("search-button");
+
+        async function fetchIPOs(searchQuery = "") {
+          ipoListContainer.innerHTML = "";
+          loadingSpinner.style.display = "block";
+          errorMessage.style.display = "none";
+          noResultsMessage.style.display = "none";
+
+          let url = "http://127.0.0.1:8000/api/ipo/";
+          console.log("Attempting to fetch from URL:", url);
+          if (searchQuery) {
+            url += `?search=${encodeURIComponent(searchQuery)}`;
+          }
+
+          try {
+            const response = await fetch(url);
+            console.log(
+              "Fetch response status:",
+              response.status,
+              response.statusText
+            );
+
+            if (!response.ok) {
+              const errorBody = await response.text();
+              console.error("Backend error response:", errorBody);
+              throw new Error(
+                `HTTP error! Status: ${response.status}. Message: ${
+                  errorBody || "Unknown error"
+                }`
+              );
+            }
+            const data = await response.json();
+            renderIPOs(data);
+          } catch (error) {
+            console.error("Error fetching IPOs:", error);
+            errorMessage.style.display = "block";
+            errorMessage.innerHTML = `Failed to load IPO data. Please try again later. <br>
+                        Error details: <strong>${error.message}</strong>. <br>
+                        Please ensure your Django backend is running and accessible at \`http://127.0.0.1:8000/api/ipo/\`. <br>
+                        If you are running this frontend from a different origin (e.g., a local file or a different domain/port), you might need to configure CORS (Cross-Origin Resource Sharing) on your Django backend to allow requests from this origin.`;
+          } finally {
+            loadingSpinner.style.display = "none";
+          }
+        }
+
+        function renderIPOs(ipos) {
+          if (ipos.length === 0) {
+            noResultsMessage.style.display = "block";
+            return;
+          }
+
+          ipos.forEach((ipo) => {
+            const statusClass = `status-${ipo.status
+              .toLowerCase()
+              .replace(/\s/g, "-")}`;
+
+            const ipoCard = document.createElement("div");
+            ipoCard.classList.add("col-lg-6", "col-md-12");
+            ipoCard.innerHTML = `
+                        <div class="ipo-card">
+                            <div class="ipo-card-header">
+                                <img src="${
+                                  ipo.company_logo ||
+                                  "https://placehold.co/50x50/cccccc/ffffff?text=Logo"
+                                }" alt="${
+              ipo.company_name
+            } Logo" width="50" height="50" onerror="this.onerror=null;this.src='https://placehold.co/50x50/cccccc/ffffff?text=Logo';">
+                                <h5 class="ipo-card-title">${
+                                  ipo.company_name
+                                }</h5>
+                            </div>
+                            <div class="ipo-detail-row">
+                                <div class="ipo-detail-item">
+                                    <strong>PRICE BAND</strong>
+                                    <span>${
+                                      ipo.price_band || "Not Issued"
+                                    }</span>
+                                </div>
+                                <div class="ipo-detail-item">
+                                    <strong>OPEN</strong>
+                                    <span>${
+                                      ipo.open_date || "Not Issued"
+                                    }</span>
+                                </div>
+                            </div>
+                            <div class="ipo-detail-row">
+                                <div class="ipo-detail-item">
+                                    <strong>CLOSE</strong>
+                                    <span>${
+                                      ipo.close_date || "Not Issued"
+                                    }</span>
+                                </div>
+                                <div class="ipo-detail-item">
+                                    <strong>ISSUE SIZE</strong>
+                                    <span>${
+                                      ipo.issue_size || "Not Issued"
+                                    }</span>
+                                </div>
+                            </div>
+                            <div class="ipo-detail-row">
+                                <div class="ipo-detail-item">
+                                    <strong>ISSUE TYPE</strong>
+                                    <span>${
+                                      ipo.issue_type || "Book Built"
+                                    }</span>
+                                </div>
+                                <div class="ipo-detail-item">
+                                    <strong>LISTING DATE</strong>
+                                    <span>${
+                                      ipo.listing_date || "Not Issued"
+                                    }</span>
+                                </div>
+                            </div>
+                            <div class="ipo-detail-row">
+                                <div class="ipo-detail-item">
+                                    <strong>STATUS</strong>
+                                    <span class="status-badge ${statusClass}">${
+              ipo.status
+            }</span>
+                                </div>
+                                <div class="ipo-detail-item">
+                                    <strong>DOCUMENTS</strong>
+                                    <span>
+                                        ${
+                                          ipo.drhp_pdf
+                                            ? `<a href="${ipo.drhp_pdf}" target="_blank" class="btn btn-outline-primary btn-sm me-2">DRHP</a>`
+                                            : ""
+                                        }
+                                        ${
+                                          ipo.rhp_pdf
+                                            ? `<a href="${ipo.rhp_pdf}" target="_blank" class="btn btn-outline-primary btn-sm">RHP</a>`
+                                            : ""
+                                        }
+                                    </span>
+                                </div>
+                            </div>
+                            ${
+                              ipo.status &&
+                              ipo.status.toLowerCase() === "listed"
+                                ? `
+                                <hr class="my-3">
+                                <div class="ipo-detail-row">
+                                    <div class="ipo-detail-item">
+                                        <strong>IPO PRICE</strong>
+                                        <span>₹${
+                                          ipo.ipo_price
+                                            ? ipo.ipo_price.toFixed(2)
+                                            : "N/A"
+                                        }</span>
+                                    </div>
+                                    <div class="ipo-detail-item">
+                                        <strong>LISTING PRICE</strong>
+                                        <span>₹${
+                                          ipo.listing_price
+                                            ? ipo.listing_price.toFixed(2)
+                                            : "N/A"
+                                        }</span>
+                                    </div>
+                                </div>
+                                <div class="ipo-detail-row">
+                                    <div class="ipo-detail-item">
+                                        <strong>LISTING GAIN</strong>
+                                        <span>${
+                                          ipo.listing_gain
+                                            ? ipo.listing_gain.toFixed(2) + "%"
+                                            : "N/A"
+                                        }</span>
+                                    </div>
+                                    <div class="ipo-detail-item">
+                                        <strong>CURRENT RETURN</strong>
+                                        <span>${
+                                          ipo.current_return
+                                            ? ipo.current_return.toFixed(2) +
+                                              "%"
+                                            : "N/A"
+                                        }</span>
+                                    </div>
+                                </div>
+                                <div class="ipo-detail-row">
+                                    <div class="ipo-detail-item">
+                                        <strong>CURRENT MARKET PRICE (CMP)</strong>
+                                        <span>₹${
+                                          ipo.current_market_price
+                                            ? ipo.current_market_price.toFixed(
+                                                2
+                                              )
+                                            : "N/A"
+                                        }</span>
+                                    </div>
+                                    <div class="ipo-detail-item">
+                                    </div>
+                                </div>
+                            `
+                                : ""
+                            }
+                        </div>
+                    `;
+            ipoListContainer.appendChild(ipoCard);
+          });
+        }
+
+        searchButton.addEventListener("click", () => {
+          const searchQuery = searchInput.value.trim();
+          fetchIPOs(searchQuery);
+        });
+
+        fetchIPOs();
+      });
+    </script>
+  </body>
+</html>
